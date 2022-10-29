@@ -6,40 +6,45 @@ async function getMessage(
   actor: string,
   pipelineFixed: boolean
 ): Promise<object> {
-  const message = pipelineFixed
-    ? `<font color="#008200">${actor} fixed the pipeline!</font>`
-    : `<font color="#820000">${actor} broke the pipeline!</font>`
-  const icon = pipelineFixed
-    ? 'https://cdn.iconscout.com/icon/free/png-256/like-605-761613.png'
-    : 'https://cdn.iconscout.com/icon/free/png-256/bomb-108-444520.png'
   const owner = github.context.repo.owner
   const repo = github.context.repo.repo
   const runId = github.context.runId
+
+  const title = `${owner}/${repo}`
+  const subtitle = `Workflow: ${github.context.workflow}`
+  const text = pipelineFixed
+    ? `<font color="#008200">${actor} fixed the pipeline!</font>`
+    : `<font color="#820000">${actor} broke the pipeline!</font>`
+  const imageUrl = pipelineFixed
+    ? 'https://cdn.iconscout.com/icon/free/png-256/like-605-761613.png'
+    : 'https://cdn.iconscout.com/icon/free/png-256/bomb-108-444520.png'
+  const url = `https://github.com/${owner}/${repo}/actions/runs/${runId}`
 
   return {
     cardsV2: [
       {
         card: {
           header: {
-            title: repo,
-            imageUrl: icon
+            title,
+            imageUrl,
+            subtitle
           },
           sections: [
             {
               widgets: [
                 {
                   decoratedText: {
-                    text: message
+                    text
                   }
                 },
                 {
                   buttonList: {
                     buttons: [
                       {
-                        text: 'Go to pipeline',
+                        text: 'Go to workflow',
                         onClick: {
                           openLink: {
-                            url: `https://github.com/${owner}/${repo}/actions/runs/${runId}`
+                            url
                           }
                         }
                       }
