@@ -1,0 +1,25 @@
+name: Notify on workflow broken or fixed
+author: Jacob Ibáñez Sánchez
+description: This action sends a message to a google chat when a workflow is broken or fixed.
+inputs:
+  token:
+    description: The github token
+    required: true
+  workflow-file:
+    description: The name of the workflow yaml file, including the .yml extension
+    required: true
+  job-status:
+    description: The needed job status
+    required: true
+  webhook:
+    description: The google chat webhook url, don't forget to add a threadId
+    required: true
+  actor:
+    description: The actor of the job
+    required: true
+runs:
+  using: node12
+  main: dist/index.js
+branding:
+  icon: message-square
+  color: red
